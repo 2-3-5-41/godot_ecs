@@ -54,3 +54,9 @@ impl Camera {
         self
     }
 }
+
+impl Default for Camera {
+    fn default() -> Self {
+        Self::new()
+    }
+}

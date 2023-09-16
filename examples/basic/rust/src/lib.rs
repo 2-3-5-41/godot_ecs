@@ -70,7 +70,7 @@ impl NodeVirtual for Example3D {
 #[godot_api]
 impl Example3D {
     fn get_world(&mut self) -> &mut World {
-        return self.world.as_mut().unwrap();
+        self.world.as_mut().unwrap()
     }
 }
 
