@@ -1,10 +1,10 @@
-use bevy_ecs::{schedule::Schedule, system::Query, world::World};
+use bevy_ecs::{schedule::Schedule, system::{Query, Commands}, world::World};
 use godot::prelude::{
-    gdextension, godot_api, godot_print, Base, Basis, ExtensionLibrary, GodotClass,
-    Node, NodeVirtual, Transform3D, Vector3,
+    gdextension, godot_api, godot_print, Base, Basis, ExtensionLibrary, GodotClass, Node,
+    NodeVirtual, Transform3D, Vector3, Color,
 };
 use godot_ecs::{
-    rendering::{camera::Camera, viewport::Viewport},
+    rendering::{camera::Camera, viewport::Viewport, canvas::Canvas},
     schedule_labels::{PhysicsUpdate, Startup, Update},
 };
 
@@ -49,6 +49,12 @@ impl NodeVirtual for Example3D {
         }
     }
 
+    fn process(&mut self, _delta: f64) {
+        self.get_world().run_schedule(Update);
+    }
+    fn physics_process(&mut self, _delta: f64) {
+        self.get_world().run_schedule(PhysicsUpdate);
+    }
     fn enter_tree(&mut self) {
         // We may want to add these in early to access them later.
         let root_viewport = self.base.get_viewport().unwrap().get_viewport_rid();
@@ -59,12 +65,6 @@ impl NodeVirtual for Example3D {
     fn ready(&mut self) {
         self.get_world().run_schedule(Startup);
     }
-    fn process(&mut self, _delta: f64) {
-        self.get_world().run_schedule(Update);
-    }
-    fn physics_process(&mut self, _delta: f64) {
-        self.get_world().run_schedule(PhysicsUpdate);
-    }
 }
 
 #[godot_api]
@@ -74,7 +74,7 @@ impl Example3D {
     }
 }
 
-fn startup_system(query_root: Query<&Viewport>, query_main_cam: Query<&Camera>) {
+fn startup_system(query_root: Query<&Viewport>, query_main_cam: Query<&Camera>, mut commands: Commands) {
     let root = query_root
         .get_single()
         .expect("There is no root viewport...");
@@ -91,9 +91,14 @@ fn startup_system(query_root: Query<&Viewport>, query_main_cam: Query<&Camera>) 
         ));
 
     godot_print!("Ready!");
+
+    commands.spawn(Canvas::new().set_modulate(Color::from_rgb(255.0, 100.0, 50.0)));
 }
 
-fn update_system() {
+fn update_system(canvas_query: Query<&Canvas>) {
+    canvas_query.iter().for_each(|canvas| {
+        godot_print!("Found a canvas: {:?}", canvas);
+    });
     godot_print!("Update...");
 }
 

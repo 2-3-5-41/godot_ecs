@@ -29,9 +29,18 @@
 			"\tpub fn from_rid(rid: Rid) -> Self {",
 			"\t\tSelf(rid)",
 			"\t}",
+			"\tpub fn get_rid(&self) -> Rid {",
+			"\t\tself.0.clone()",
+			"\t}",
 			"\tpub fn free(&self) {",
 			"\t\t${2:Server}::singleton().free_rid(self.0);",
 			"\t}"
+			"}",
+			"",
+			"impl Default for ${1:Component} {",
+			"\tfn default() -> Self {",
+			"\t\tSelf::new()",
+			"\t}",
 			"}"
 		]
 	},
@@ -45,14 +54,34 @@
 			"\tpub fn new() -> Self {",
 			"\t\tSelf(${2:Server}::singleton().${3:Create})",
 			"\t}",
-			"\t}",
 			"\tpub fn from_rid(rid: Rid) -> Self {",
 			"\t\tSelf(rid)",
+			"\t}",
+			"\tpub fn get_rid(&self) -> Rid {",
+			"\t\tself.0.clone()",
 			"\t}",
 			"\tpub fn free(&self) {",
 			"\t\t${2:Server}::singleton().free_rid(self.0);",
 			"\t}"
+			"}",
+			"",
+			"impl Default for ${1:Component} {",
+			"\tfn default() -> Self {",
+			"\t\tSelf::new()",
+			"\t}",
 			"}"
+		]
+	},
+	"Feature 3D": {
+		"prefix": ["ft_3d", "feature_3d"],
+		"body": [
+			"#[cfg(feature = \"3d\")]"
+		]
+	},
+	"Feature 2D": {
+		"prefix": ["ft_2d", "feature_2d"],
+		"body": [
+			"#[cfg(feature = \"2d\")]"
 		]
 	}
 }

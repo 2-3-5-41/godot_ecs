@@ -12,7 +12,7 @@ impl Camera {
         Self(RenderingServer::singleton().camera_create())
     }
     pub fn get_rid(&self) -> Rid {
-        return self.0.clone();
+        self.0.clone()
     }
     pub fn from_rid(rid: Rid) -> Self {
         Self(rid)
@@ -20,7 +20,6 @@ impl Camera {
     pub fn free(&self) {
         RenderingServer::singleton().free_rid(self.0);
     }
-
     pub fn set_attributes(self, effects: Rid) -> Self {
         RenderingServer::singleton().camera_set_camera_attributes(self.0, effects);
         self

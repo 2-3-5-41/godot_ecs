@@ -1,3 +1,10 @@
 #[cfg(feature = "3d")]
 pub mod camera;
+#[cfg(feature = "3d")]
+pub mod camera_attributes;
+#[cfg(feature = "2d")]
+pub mod canvas;
+#[cfg(feature = "2d")]
+pub mod canvas_item;
+#[cfg(feature = "2d")]
 pub mod viewport;
