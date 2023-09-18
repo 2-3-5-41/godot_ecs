@@ -7,4 +7,6 @@ pub mod canvas;
 #[cfg(feature = "2d")]
 pub mod canvas_item;
 #[cfg(feature = "2d")]
+pub mod canvas_light;
+#[cfg(feature = "2d")]
 pub mod viewport;

@@ -1,6 +1,6 @@
 use bevy_ecs::prelude::Component;
 use godot::engine::RenderingServer;
-use godot::prelude::{Rid, Vector2, Color};
+use godot::prelude::{Color, Rid, Vector2};
 
 #[derive(Component, Copy, Clone, Debug)]
 pub struct Canvas(Rid);
