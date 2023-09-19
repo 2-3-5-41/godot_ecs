@@ -1,4 +1,4 @@
-use bevy_ecs::schedule::ScheduleLabel;
+use bevy::ecs::schedule::ScheduleLabel;
 
 #[derive(Debug, Hash, Clone, PartialEq, Eq, ScheduleLabel)]
 pub struct Startup;
