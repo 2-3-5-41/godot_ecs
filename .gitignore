@@ -1,4 +1,7 @@
-.vscode/settings.json
+# Ignore main crate build files
 /target
-examples/*/rust/target
 /Cargo.lock
+
+# Ignore 'examples' crates' build files
+examples/*/rust/target
+examples/*/rust/Cargo.lock

@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://dfs2hnvk12kgs"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s6e2d"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_x8r1u"]
+sky_material = SubResource("ProceduralSkyMaterial_s6e2d")
+
+[sub_resource type="Environment" id="Environment_6av1i"]
+background_mode = 2
+sky = SubResource("Sky_x8r1u")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gnu7d"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1la0s"]
+material = SubResource("StandardMaterial3D_gnu7d")
+size = Vector2(32, 32)
+
+[node name="EcsWorld" type="EcsWorld"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 3, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6av1i")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_1la0s")
