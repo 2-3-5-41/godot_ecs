@@ -45,8 +45,6 @@ pub enum RendererCreate {
     VoxelGI,
 }
 
-impl RendererCreate {}
-
 /// A struct that stores a valid [`Rid`] that it was able to create
 /// on the [`RenderingServer`], or a provided pre-existing valid [`Rid`].
 #[derive(Debug, Clone, Copy)]
