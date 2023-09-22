@@ -23,7 +23,7 @@ impl GdTransform3D {
     pub fn get_transform_mut(&mut self) -> &mut Transform3D {
         &mut self.gd_transform
     }
-    pub fn set_origin(&mut self, new: Vector3) -> &mut Self{
+    pub fn set_origin(&mut self, new: Vector3) -> &mut Self {
         self.get_transform_mut().origin = new;
         self
     }

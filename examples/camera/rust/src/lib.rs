@@ -1,12 +1,15 @@
-use bevy_ecs::system::Query;
-use godot::{prelude::*, engine::RenderingServer};
+use godot::prelude::*;
 use godot_ecs::{
-    ecs::{Ecs, ScheduleIdentifier},
+    ecs::Ecs,
+    godot_schedule::*,
     rendering::{
-        components::{camera::{CameraBundle, Camera}, viewport::Viewport},
-        Renderable,
-    }, math::transform::GdTransform3D,
+        components::{camera::CameraBundle, viewport::Viewport},
+        resource::RenderingServerResources,
+        traits::Renderable,
+    },
 };
+
+mod systems;
 
 struct MyExtension;
 
@@ -26,60 +29,45 @@ impl NodeVirtual for EcsWorld {
     fn init(base: Base<Node>) -> Self {
         let mut ecs = Ecs::default();
 
-        // In `init`, you can go ahead and add your systems to the [`Ecs`] schedules.
-        ecs.get_schedule(ScheduleIdentifier::Startup)
-            .add_systems(setup_main_cam);
+        ecs.add_systems(Ready, systems::setup_main_cam)
+            .add_systems(Process, systems::process_system)
+            .add_systems(PhysicsProcess, systems::physics_system)
+            .add_systems(ExitTree, systems::on_exit);
 
-        ecs.get_schedule(ScheduleIdentifier::Process)
-            .add_systems(process_system);
-
-        ecs.get_schedule(ScheduleIdentifier::PhysicsProcess)
-            .add_systems(physics_system);
+        ecs.get_world_mut()
+            .insert_resource(RenderingServerResources::new());
 
         Self { base, ecs }
     }
     fn enter_tree(&mut self) {
-        let root_viewport = self.base
+        let root_viewport = self
+            .base
             .get_viewport()
             .unwrap()
             .get_viewport_rid()
             .to_valid_u64();
 
-        self.ecs.get_world_mut()
-            .spawn(CameraBundle::with_viewport(Viewport::new_from_existing(
-                root_viewport,
-            )));
+        let rendering_resources = self.ecs.get_world_mut().resource_mut::<RenderingServerResources>();
+
+        self.ecs.get_world_mut().spawn(CameraBundle {
+            camera: todo!(),
+            viewport: todo!(),
+            transform_3d: todo!(),
+        });
     }
     fn ready(&mut self) {
-        self.ecs.run_schedule(ScheduleIdentifier::Startup);
+        self.ecs.run_schedule(Ready)
     }
     fn process(&mut self, _delta: f64) {
-        self.ecs.run_schedule(ScheduleIdentifier::Process);
+        self.ecs.run_schedule(Process)
     }
     fn physics_process(&mut self, _delta: f64) {
-        self.ecs.run_schedule(ScheduleIdentifier::PhysicsProcess);
+        self.ecs.run_schedule(PhysicsProcess)
+    }
+    fn exit_tree(&mut self) {
+        self.ecs.run_schedule(ExitTree)
     }
 }
 
 #[godot_api]
 impl EcsWorld {}
-
-fn setup_main_cam(mut query: Query<(&Camera, &Viewport, &mut GdTransform3D)>) {
-    query.iter_mut().for_each(|(camera, viewport, mut transform)| {
-        transform.translate(Vector3::new(0.0, 1.0, -1.0));
-
-        let cam_rid = camera.get_resource().get_rid();
-        let viewport_rid = viewport.get_resource().get_rid();
-
-        RenderingServer::singleton().viewport_attach_camera(Rid::new(viewport_rid), Rid::new(cam_rid));
-    });
-    godot_print!("Attempted to attach new 'main' camera to root viewport...");
-}
-
-fn process_system() {
-    godot_print!("Process...")
-}
-
-fn physics_system() {
-    godot_print!("Physics...")
-}

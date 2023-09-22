@@ -1,3 +1,5 @@
+use bevy_ecs::{system::Resource, world::FromWorld};
+use bevy_utils::{hashbrown::HashMap, Uuid};
 use godot::{
     engine::{image::Format, rendering_server::TextureLayeredType, Image, RenderingServer},
     prelude::{godot_error, Array, Dictionary, Gd, Rid},
@@ -42,6 +44,8 @@ pub enum RendererCreate {
     VisibilityNotifier,
     VoxelGI,
 }
+
+impl RendererCreate {}
 
 /// A struct that stores a valid [`Rid`] that it was able to create
 /// on the [`RenderingServer`], or a provided pre-existing valid [`Rid`].
@@ -252,5 +256,32 @@ impl RendererResource {
                 None
             }
         }
+    }
+}
+
+/// Similar to bevy's asset resource, this will hold all [`RendererResource`]s
+/// that can be accessed via the generated Uuid.
+#[derive(Resource, Clone, Debug)]
+pub struct RenderingServerResources(HashMap<Uuid, RendererResource>);
+
+impl RenderingServerResources {
+    pub fn new() -> Self {
+        Self(HashMap::default())
+    }
+    pub fn insert(&mut self, resource: RendererResource) -> Option<Uuid> {
+        let uuid = Uuid::new_v4();
+        self.0.insert(uuid, resource);
+        Some(uuid)
+    }
+    pub fn get_resource(&mut self, uuid: Uuid) -> Option<&RendererResource> {
+        self.0.get(&uuid)
+    }
+    pub fn get_resource_mut(&mut self, uuid: Uuid) -> Option<&mut RendererResource> {
+        self.0.get_mut(&uuid)
+    }
+    pub fn free_all(&mut self) {
+        self.0.drain().for_each(|(_, resource)| {
+            RenderingServer::singleton().free_rid(Rid::new(resource.get_rid()))
+        });
     }
 }

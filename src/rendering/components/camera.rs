@@ -1,6 +1,6 @@
 use crate::{
     math::transform::GdTransform3D,
-    rendering::{resource::*, Renderable},
+    rendering::{resource::*, traits::Renderable},
 };
 use bevy_ecs::{bundle::Bundle, component::Component};
 

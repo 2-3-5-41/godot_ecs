@@ -10,7 +10,8 @@ crate-type = ["lib", "cdylib"]
 
 [dependencies]
 godot = { git = "https://github.com/godot-rust/gdext", branch = "master" }
-bevy_ecs ={ version = "0.11.2", features = ["default"] }
+bevy_ecs = { version = "0.11.2", features = ["default"] }
+bevy_utils = "0.11.2"
 
 [features]
 full = ["3d", "2d"]

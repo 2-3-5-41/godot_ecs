@@ -1,65 +1,55 @@
-use std::collections::HashMap;
+use bevy_ecs::{
+    schedule::{IntoSystemConfigs, Schedule, ScheduleLabel, Schedules},
+    world::World,
+};
 
-use bevy_ecs::{schedule::Schedule, world::World};
+use crate::godot_schedule::*;
 
 pub struct Ecs {
     world: World,
-    schedules: HashMap<ScheduleIdentifier, Schedule>,
 }
 
 impl Ecs {
     pub fn new() -> Self {
         Self {
             world: World::new(),
-            schedules: HashMap::new(),
         }
-    }
-    pub fn get_world(&self) -> &World {
-        &self.world
     }
     pub fn get_world_mut(&mut self) -> &mut World {
         &mut self.world
     }
-    pub fn add_schedule(&mut self, identifier: ScheduleIdentifier, schedule: Schedule) {
-        let map = &mut self.schedules;
-        map.insert(identifier, schedule);
-    }
-    pub fn try_get_schedule(&mut self, identifier: ScheduleIdentifier) -> Option<&mut Schedule> {
-        let map = &mut self.schedules;
-        map.get_mut(&identifier)
-    }
-    /// Can panic!
-    pub fn get_schedule(&mut self, identifier: ScheduleIdentifier) -> &mut Schedule {
-        self.try_get_schedule(identifier).unwrap()
-    }
-    pub fn run_schedule(&mut self, identifier: ScheduleIdentifier) {
-        let map = &mut self.schedules;
-        for (id, schedule) in map {
-            if id == &identifier {
-                schedule.run(&mut self.world)
-            }
+    /// A simple re-implementation of a `bevy_app::app::App` `pub fn add_systems()`
+    pub fn add_systems<M>(
+        &mut self,
+        label: impl ScheduleLabel,
+        systems: impl IntoSystemConfigs<M>,
+    ) -> &mut Self {
+        let mut schedules = self.world.resource_mut::<Schedules>();
+
+        if let Some(schedule) = schedules.get_mut(&label) {
+            schedule.add_systems(systems);
+        } else {
+            let mut new_schedule = Schedule::default();
+            new_schedule.add_systems(systems);
+            schedules.insert(label, new_schedule);
         }
+
+        self
+    }
+    pub fn run_schedule(&mut self, label: impl AsRef<dyn ScheduleLabel>) {
+        self.world.run_schedule(label);
     }
 }
 
 impl Default for Ecs {
     fn default() -> Self {
-        let mut hashmap: HashMap<ScheduleIdentifier, Schedule> = HashMap::new();
+        let mut world = World::new();
 
-        hashmap.insert(ScheduleIdentifier::Startup, Schedule::default());
-        hashmap.insert(ScheduleIdentifier::Process, Schedule::default());
-        hashmap.insert(ScheduleIdentifier::PhysicsProcess, Schedule::default());
+        world.add_schedule(Schedule::default(), Ready);
+        world.add_schedule(Schedule::default(), Process);
+        world.add_schedule(Schedule::default(), PhysicsProcess);
+        world.add_schedule(Schedule::default(), ExitTree);
 
-        Self {
-            world: World::new(),
-            schedules: hashmap,
-        }
+        Self { world }
     }
-}
-
-#[derive(PartialEq, Eq, Hash, Debug)]
-pub enum ScheduleIdentifier {
-    Startup,
-    Process,
-    PhysicsProcess,
 }

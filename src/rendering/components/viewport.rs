@@ -1,6 +1,6 @@
 use crate::rendering::{
     resource::{RendererCreate, RendererResource},
-    Renderable,
+    traits::Renderable,
 };
 use bevy_ecs::component::Component;
 
