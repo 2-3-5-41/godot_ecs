@@ -1,8 +1,9 @@
 use bevy_ecs::system::{Commands, Query, ResMut};
 use godot::{engine::RenderingServer, prelude::*};
 use godot_ecs::resources::{
+    renderable::Renderable,
     rid_server::{ResourceHandle, RidServer},
-    Renderable, ResourceId,
+    ResourceId,
 };
 
 use crate::components::{MainCamera, MainViewport};
@@ -34,6 +35,7 @@ pub fn physics_system() {
 
 // This system should be able to find all created RID's
 // and free them on exit being called form `_exit_tree()`.
-pub fn on_exit() {
+pub fn on_exit(mut renderable_server: ResMut<RidServer<Renderable>>) {
     godot_print!("Attempting to free all RID's in the rendering server...");
+    renderable_server.free_all()
 }

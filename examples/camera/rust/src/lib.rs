@@ -3,7 +3,10 @@ use godot::prelude::*;
 use godot_ecs::{
     ecs::Ecs,
     godot_schedule::*,
-    resources::{rid_server::RidServer, Renderable, RenderableType},
+    resources::{
+        renderable::{Renderable, RenderableType},
+        rid_server::RidServer,
+    },
 };
 
 mod components;

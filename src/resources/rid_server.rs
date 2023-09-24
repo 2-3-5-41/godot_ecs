@@ -24,12 +24,10 @@ impl<R: ResourceId> RidServer<R> {
     }
     pub fn try_get(&self, handle: &ResourceHandle) -> Option<&R> {
         if let ResourceHandle::Valid(uuid) = handle {
-            self.hash_map.get(uuid)
+            return self.hash_map.get(uuid);
         } else {
-            panic!("Invalid resource handle!")
+            return None;
         };
-
-        None
     }
     pub fn free_all(&mut self) {
         self.hash_map
