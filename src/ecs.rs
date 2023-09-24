@@ -45,6 +45,7 @@ impl Default for Ecs {
     fn default() -> Self {
         let mut world = World::new();
 
+        world.add_schedule(Schedule::default(), EnterTree);
         world.add_schedule(Schedule::default(), Ready);
         world.add_schedule(Schedule::default(), Process);
         world.add_schedule(Schedule::default(), PhysicsProcess);
