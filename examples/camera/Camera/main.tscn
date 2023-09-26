@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dfs2hnvk12kgs"]
+[gd_scene load_steps=7 format=3 uid="uid://dfs2hnvk12kgs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s6e2d"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -20,6 +20,8 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_gnu7d")
 size = Vector2(32, 32)
 
+[sub_resource type="BoxMesh" id="BoxMesh_j38er"]
+
 [node name="EcsWorld" type="EcsWorld"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -31,3 +33,7 @@ environment = SubResource("Environment_6av1i")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_1la0s")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_j38er")

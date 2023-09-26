@@ -31,8 +31,6 @@ impl NodeVirtual for EcsWorld {
         let mut ecs = Ecs::default();
 
         ecs.add_systems(EnterTree, systems::setup_main_cam)
-            .add_systems(Process, systems::process_system)
-            .add_systems(PhysicsProcess, systems::physics_system)
             .add_systems(ExitTree, systems::on_exit);
 
         ecs.get_world_mut()
@@ -47,9 +45,8 @@ impl NodeVirtual for EcsWorld {
 
             let world = self.ecs.get_world_mut();
             let mut server = world.resource_mut::<RidServer<Renderable>>();
-            let main_viewport = server.add(Renderable::from_existing(RenderableType::Viewport(
-                root_viewport,
-            )));
+            let main_viewport =
+                server.add(Renderable::new(RenderableType::Viewport(root_viewport)));
 
             world.spawn((main_viewport, MainViewport));
         }

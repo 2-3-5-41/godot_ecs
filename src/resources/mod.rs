@@ -4,5 +4,10 @@ pub mod renderable;
 pub mod rid_server;
 
 pub trait ResourceId: Clone + Copy {
-    fn get_rid(&self) -> Rid;
+    fn get_rid(&self) -> Rid {
+        unimplemented!()
+    }
+    fn free_rid(&self) {
+        unimplemented!()
+    }
 }

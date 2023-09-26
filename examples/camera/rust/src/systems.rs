@@ -1,36 +1,41 @@
-use bevy_ecs::system::{Commands, Query, ResMut};
+use bevy_ecs::{
+    query::With,
+    system::{Commands, Query, ResMut},
+};
 use godot::{engine::RenderingServer, prelude::*};
 use godot_ecs::resources::{
-    renderable::Renderable,
+    renderable::{Renderable, RenderableType},
     rid_server::{ResourceHandle, RidServer},
     ResourceId,
 };
 
-use crate::components::{MainCamera, MainViewport};
+use crate::components::{GdTransform3D, MainCamera, MainViewport};
 
 pub fn setup_main_cam(
-    query_main_viewport: Query<(&ResourceHandle, &MainViewport)>,
+    query_main_viewport: Query<&ResourceHandle, With<MainViewport>>,
     mut renderable_server: ResMut<RidServer<Renderable>>,
     mut commands: Commands,
 ) {
-    let (viewport_handle, _) = query_main_viewport.get_single().unwrap();
+    let viewport_handle = query_main_viewport.get_single().unwrap();
 
     let viewport = renderable_server
         .try_get(viewport_handle)
-        .expect("There is no viewport here..."); // BUG: Panicing even though `viewport_handle` does exist on the hashmap.
-    let camera = Renderable::create_camera();
+        .expect("There is no viewport here...");
+    let camera = Renderable::new(RenderableType::Camera(
+        RenderingServer::singleton().camera_create(),
+    ));
+    let camera_transform = GdTransform3D(
+        Transform3D::new(Basis::IDENTITY, Vector3::new(0.0, 1.0, -5.0)).looking_at(
+            Vector3::ZERO,
+            Vector3::UP,
+            false,
+        ),
+    );
 
     RenderingServer::singleton().viewport_attach_camera(viewport.get_rid(), camera.get_rid());
+    RenderingServer::singleton().camera_set_transform(camera.get_rid(), camera_transform.0);
 
-    commands.spawn((renderable_server.add(camera), MainCamera));
-}
-
-pub fn process_system() {
-    godot_print!("Process...")
-}
-
-pub fn physics_system() {
-    godot_print!("Physics...")
+    commands.spawn((renderable_server.add(camera), camera_transform, MainCamera));
 }
 
 // This system should be able to find all created RID's
