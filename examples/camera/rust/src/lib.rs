@@ -4,12 +4,14 @@ use godot_ecs::{
     ecs::Ecs,
     godot_schedule::*,
     resources::{
-        renderable::{Renderable, RenderableType},
-        rid_server::RidServer,
+        renderable::{viewport::Viewport, camera::Camera},
+        rid_server::RidServer, traits::RenderableObj,
     },
 };
+use resources::DeltaTime;
 
 mod components;
+mod resources;
 mod systems;
 
 struct MyExtension;
@@ -31,10 +33,16 @@ impl NodeVirtual for EcsWorld {
         let mut ecs = Ecs::default();
 
         ecs.add_systems(EnterTree, systems::setup_main_cam)
+            .add_systems(Process, systems::move_camera)
             .add_systems(ExitTree, systems::on_exit);
 
         ecs.get_world_mut()
-            .insert_resource(RidServer::<Renderable>::new());
+            .insert_resource(RidServer::<Viewport>::new());
+        
+        ecs.get_world_mut()
+            .insert_resource(RidServer::<Camera>::new());
+
+        ecs.get_world_mut().insert_resource(DeltaTime(0.0));
 
         Self { base, ecs }
     }
@@ -44,9 +52,9 @@ impl NodeVirtual for EcsWorld {
             let root_viewport = self.base.get_viewport().unwrap().get_viewport_rid();
 
             let world = self.ecs.get_world_mut();
-            let mut server = world.resource_mut::<RidServer<Renderable>>();
+            let mut server = world.resource_mut::<RidServer<Viewport>>();
             let main_viewport =
-                server.add(Renderable::new(RenderableType::Viewport(root_viewport)));
+                server.add(Viewport::from_rid(root_viewport));
 
             world.spawn((main_viewport, MainViewport));
         }
@@ -56,10 +64,18 @@ impl NodeVirtual for EcsWorld {
     fn ready(&mut self) {
         self.ecs.run_schedule(Ready)
     }
-    fn process(&mut self, _delta: f64) {
+    fn process(&mut self, delta: f64) {
+        // Set process delta time.
+        self.ecs.get_world_mut().resource_mut::<DeltaTime>().0 = delta;
+
+        // Then run process schedule.
         self.ecs.run_schedule(Process)
     }
-    fn physics_process(&mut self, _delta: f64) {
+    fn physics_process(&mut self, delta: f64) {
+        // Set process delta time.
+        self.ecs.get_world_mut().resource_mut::<DeltaTime>().0 = delta;
+
+        // Then run physics process schedule.
         self.ecs.run_schedule(PhysicsProcess)
     }
     fn exit_tree(&mut self) {

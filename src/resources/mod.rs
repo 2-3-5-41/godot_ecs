@@ -1,13 +1,6 @@
-use godot::prelude::Rid;
-
+pub mod physical2d;
+pub mod physical3d;
 pub mod renderable;
 pub mod rid_server;
-
-pub trait ResourceId: Clone + Copy {
-    fn get_rid(&self) -> Rid {
-        unimplemented!()
-    }
-    fn free_rid(&self) {
-        unimplemented!()
-    }
-}
+pub mod traits;
+pub(crate) mod utils;

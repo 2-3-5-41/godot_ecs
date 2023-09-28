@@ -2,7 +2,9 @@
 What if Godot 4.1 and Bevy got married? Well, you'd get one interesting duo of data driven goodness.
 
 ## In Development
-This crate is far from production ready, and I plan to focus souly on everything related to interacting with the `RenderingSerer` and the other Godot objects/singletons that are used with the rendering server.
+> **This crate is not production ready** ⚠️
+>
+> This crate serves as an example, *for now*, as to how you can use `bevy_ecs` as a means to directly interact with Godot through GlobalScope objects like the `RenderingServer`.
 
-## Why?
-Why not combine two super powers (i.e, Godot Servers, and Bevy's ECS) into an alternative _hopefully_ performant method of creating games and systems in Godot through GDExtensions? 
+## Purpose
+This crate's purpose is to bring in an alternative way to use Rust with Godot using it's low level objects like the `RenderingServer`, `PhysicsServer3D`, and others.

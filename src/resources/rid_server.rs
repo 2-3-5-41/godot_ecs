@@ -4,7 +4,7 @@ use bevy_ecs::{component::Component, system::Resource};
 use bevy_utils::Uuid;
 use godot::engine::RenderingServer;
 
-use super::ResourceId;
+use super::traits::ResourceId;
 
 /// # RidServer
 /// This is a bevy resource similar to the bevy_asset `Assets` resource,
@@ -45,7 +45,9 @@ impl<R: ResourceId> RidServer<R> {
             return Err("Cannot free invalid resource handle!".into());
         };
         let Some(resource) = self.hash_map.remove(uuid) else {
-            return Err("There is no resource under this Uuid, removing key from hashtable.".into());
+            return Err(
+                "There is no resource under this Uuid, removing key from hashtable.".into(),
+            );
         };
 
         // Free rid from Godot's server.

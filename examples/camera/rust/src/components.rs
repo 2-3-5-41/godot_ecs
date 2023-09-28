@@ -1,5 +1,5 @@
 use bevy_ecs::component::Component;
-use godot::prelude::Transform3D;
+use godot::prelude::Vector3;
 
 #[derive(Component, Debug, Clone)]
 pub struct MainViewport;
@@ -8,4 +8,7 @@ pub struct MainViewport;
 pub struct MainCamera;
 
 #[derive(Component, Debug, Clone, Copy)]
-pub struct GdTransform3D(pub Transform3D);
+pub struct Position(pub Vector3);
+
+#[derive(Component, Debug, Clone, Copy)]
+pub struct Velocity(pub Vector3);
