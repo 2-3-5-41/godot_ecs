@@ -5,7 +5,7 @@ use bevy_ecs::{
 use godot::{engine::RenderingServer, prelude::*};
 use godot_ecs::resources::{
     renderable::{camera::Camera, viewport::Viewport},
-    rid_server::{ResourceHandle, RidServer}, traits::{RenderableObj, ResourceId}
+    rid_server::{ResourceHandle, RidServer}, traits::ResourceId
 };
 
 use crate::{components::*, resources::DeltaTime};
@@ -22,7 +22,7 @@ pub fn setup_main_cam(
         .try_get(viewport_handle)
         .expect("There is no viewport here...");
     let camera = Camera::create();
-    let camera_pos = Position(Vector3::new(0.0, 2.0, -1.0));
+    let camera_pos = Position(Vector3::new(1.0, 2.0, -1.0));
 
     RenderingServer::singleton().viewport_attach_camera(viewport.get_rid(), camera.get_rid());
     RenderingServer::singleton().camera_set_transform(
@@ -48,7 +48,7 @@ pub fn move_camera(
         return;
     };
 
-    position.0.z += velocity.0.z * delta_time.0 as f32;
+    position.0.z += velocity.0.z * delta_time.as_f32();
 
     RenderingServer::singleton().camera_set_transform(
         camera_server.get(camera).get_rid(),

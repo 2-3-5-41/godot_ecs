@@ -9,6 +9,9 @@ use super::traits::ResourceId;
 /// # RidServer
 /// This is a bevy resource similar to the bevy_asset `Assets` resource,
 /// but re-implemented and narrowed down to interact with Godot's [`Rid`].
+///
+/// If you do need the functionality of bevy's `Asset` resource, you can simply add
+/// `bevy_asset` to your `Cargo.toml` and insert the `Asset` resource into your ecs world.
 #[derive(Resource, Debug, Clone)]
 pub struct RidServer<R: ResourceId> {
     hash_map: HashMap<Uuid, R>,

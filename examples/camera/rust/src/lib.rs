@@ -5,7 +5,7 @@ use godot_ecs::{
     godot_schedule::*,
     resources::{
         renderable::{viewport::Viewport, camera::Camera},
-        rid_server::RidServer, traits::RenderableObj,
+        rid_server::RidServer,
     },
 };
 use resources::DeltaTime;
@@ -34,15 +34,10 @@ impl NodeVirtual for EcsWorld {
 
         ecs.add_systems(EnterTree, systems::setup_main_cam)
             .add_systems(Process, systems::move_camera)
-            .add_systems(ExitTree, systems::on_exit);
-
-        ecs.get_world_mut()
-            .insert_resource(RidServer::<Viewport>::new());
-        
-        ecs.get_world_mut()
-            .insert_resource(RidServer::<Camera>::new());
-
-        ecs.get_world_mut().insert_resource(DeltaTime(0.0));
+            .add_systems(ExitTree, systems::on_exit)
+            .insert_resource(RidServer::<Viewport>::new())
+            .insert_resource(RidServer::<Camera>::new())
+            .insert_resource(DeltaTime(0.0));
 
         Self { base, ecs }
     }
@@ -69,7 +64,7 @@ impl NodeVirtual for EcsWorld {
         self.ecs.get_world_mut().resource_mut::<DeltaTime>().0 = delta;
 
         // Then run process schedule.
-        self.ecs.run_schedule(Process)
+        self.ecs.run_schedule(Process);
     }
     fn physics_process(&mut self, delta: f64) {
         // Set process delta time.

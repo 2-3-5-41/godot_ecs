@@ -1,5 +1,6 @@
 use bevy_ecs::{
     schedule::{IntoSystemConfigs, Schedule, ScheduleLabel, Schedules},
+    system::Resource,
     world::World,
 };
 
@@ -18,7 +19,7 @@ impl Ecs {
     pub fn get_world_mut(&mut self) -> &mut World {
         &mut self.world
     }
-    /// A simple re-implementation of a `bevy_app::app::App` `pub fn add_systems()`
+    /// A simple re-implementation of a `bevy_app::app::App::add_systems()`
     pub fn add_systems<M>(
         &mut self,
         label: impl ScheduleLabel,
@@ -34,6 +35,10 @@ impl Ecs {
             schedules.insert(label, new_schedule);
         }
 
+        self
+    }
+    pub fn insert_resource<R: Resource>(&mut self, resource: R) -> &mut Self {
+        self.world.insert_resource(resource);
         self
     }
     pub fn run_schedule(&mut self, label: impl AsRef<dyn ScheduleLabel>) {

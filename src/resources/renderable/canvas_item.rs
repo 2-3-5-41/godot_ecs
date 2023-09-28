@@ -1,11 +1,8 @@
 use godot::{engine::RenderingServer, prelude::Rid};
 
-use crate::resources::{
-    traits::{RenderableObj, ResourceId},
-    utils::macros::renderable_object,
-};
+use crate::resources::{traits::ResourceId, utils::macros::resource_object};
 
-renderable_object!(CanvasItem, canvas_item_create);
+resource_object!(CanvasItem, canvas_item_create, RenderingServer);
 
 // TODO: Provide a builder API for `CanvasItem`
 impl CanvasItem {}

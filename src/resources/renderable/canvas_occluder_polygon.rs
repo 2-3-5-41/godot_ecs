@@ -1,11 +1,12 @@
 use godot::{engine::RenderingServer, prelude::Rid};
 
-use crate::resources::{
-    traits::{RenderableObj, ResourceId},
-    utils::macros::renderable_object,
-};
+use crate::resources::{traits::ResourceId, utils::macros::resource_object};
 
-renderable_object!(CanvasOccluderPolygon, canvas_occluder_polygon_create);
+resource_object!(
+    CanvasOccluderPolygon,
+    canvas_occluder_polygon_create,
+    RenderingServer
+);
 
 // TODO: Provide a builder API for `CanvasOccluderPolygon`
 impl CanvasOccluderPolygon {}

@@ -1,11 +1,8 @@
 use godot::{engine::RenderingServer, prelude::Rid};
 
-use crate::resources::{
-    traits::{RenderableObj, ResourceId},
-    utils::macros::renderable_object,
-};
+use crate::resources::{traits::ResourceId, utils::macros::resource_object};
 
-renderable_object!(Shader, shader_create);
+resource_object!(Shader, shader_create, RenderingServer);
 
 // TODO: Provide a builder API for `Shader`
 impl Shader {}

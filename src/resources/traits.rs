@@ -8,13 +8,3 @@ pub trait ResourceId: Clone + Copy {
         unimplemented!()
     }
 }
-
-pub trait RenderableObj: ResourceId {
-    fn create() -> Self {
-        unimplemented!()
-    }
-    #[allow(unused_variables)]
-    fn from_rid(rid: Rid) -> Self {
-        unimplemented!()
-    }
-}

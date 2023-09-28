@@ -1,8 +1,22 @@
 pub(crate) mod macros {
-    macro_rules! renderable_object {
+    /// Quickly generates a default [`ResourceId`] type.
+    /// 
+    /// ## Example
+    /// ```rs
+    /// // Creates a `Camera` struct with default implementations that generates the [`Rid`] on the [`RenderingServer`]
+    /// resource_object!(Camera, camera_create, RenderingServer);
+    /// 
+    /// // Creates an `Area` struct with default implementations that generates the [`Rid`] on the [`PhysicsServer2D`]
+    /// resource_object!(Area, area_create, PhysicsServer2D);
+    /// 
+    /// // Creates an `Area` struct with default implementations that generates the [`Rid`] on the [`PhysicsServer3D`]
+    /// resource_object!(Area, area_create, PhysicsServer3D);
+    /// ```
+    macro_rules! resource_object {
         (
             $resource_name: ident,
-            $create: ident
+            $create: ident,
+            $server: ident
         ) => {
             #[derive(Debug, Clone, Copy)]
             pub struct $resource_name(Rid);
@@ -12,20 +26,20 @@ pub(crate) mod macros {
                     self.0
                 }
                 fn free_rid(&self) {
-                    RenderingServer::singleton().free_rid(self.get_rid())
+                    $server::singleton().free_rid(self.get_rid())
                 }
             }
 
-            impl RenderableObj for $resource_name {
-                fn create() -> Self {
-                    Self(RenderingServer::singleton().$create())
+            impl $resource_name {
+                pub fn create() -> Self {
+                    Self($server::singleton().$create())
                 }
-                fn from_rid(rid: Rid) -> Self {
+                pub fn from_rid(rid: Rid) -> Self {
                     Self(rid)
                 }
             }
         };
     }
 
-    pub(crate) use renderable_object;
+    pub(crate) use resource_object;
 }
