@@ -4,7 +4,7 @@ use godot_ecs::{
     ecs::Ecs,
     godot_schedule::*,
     resources::{
-        renderable::{viewport::Viewport, camera::Camera},
+        renderable::{camera::Camera, viewport::Viewport},
         rid_server::RidServer,
     },
 };
@@ -32,7 +32,8 @@ impl NodeVirtual for EcsWorld {
     fn init(base: Base<Node>) -> Self {
         let mut ecs = Ecs::default();
 
-        ecs.add_systems(EnterTree, systems::setup_main_cam)
+        ecs.add_systems(EnterTree, systems::create_main_cam)
+            .add_systems(Ready, systems::setup_main_cam)
             .add_systems(Process, systems::move_camera)
             .add_systems(ExitTree, systems::on_exit)
             .insert_resource(RidServer::<Viewport>::new())
@@ -48,12 +49,11 @@ impl NodeVirtual for EcsWorld {
 
             let world = self.ecs.get_world_mut();
             let mut server = world.resource_mut::<RidServer<Viewport>>();
-            let main_viewport =
-                server.add(Viewport::from_rid(root_viewport));
+            let main_viewport = server.add(Viewport::from_rid(root_viewport));
 
             world.spawn((main_viewport, MainViewport));
         }
-
+        
         self.ecs.run_schedule(EnterTree)
     }
     fn ready(&mut self) {

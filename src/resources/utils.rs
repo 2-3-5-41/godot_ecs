@@ -1,14 +1,14 @@
 pub(crate) mod macros {
     /// Quickly generates a default [`ResourceId`] type.
-    /// 
+    ///
     /// ## Example
     /// ```rs
     /// // Creates a `Camera` struct with default implementations that generates the [`Rid`] on the [`RenderingServer`]
     /// resource_object!(Camera, camera_create, RenderingServer);
-    /// 
+    ///
     /// // Creates an `Area` struct with default implementations that generates the [`Rid`] on the [`PhysicsServer2D`]
     /// resource_object!(Area, area_create, PhysicsServer2D);
-    /// 
+    ///
     /// // Creates an `Area` struct with default implementations that generates the [`Rid`] on the [`PhysicsServer3D`]
     /// resource_object!(Area, area_create, PhysicsServer3D);
     /// ```

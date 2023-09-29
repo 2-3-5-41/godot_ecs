@@ -31,12 +31,22 @@ impl<R: ResourceId> RidServer<R> {
     pub fn get(&self, handle: &ResourceHandle) -> &R {
         self.try_get(handle).expect("Failed to get resource!")
     }
+    pub fn get_mut(&mut self, handle: &ResourceHandle) -> &mut R {
+        self.try_get_mut(handle).expect("Failed to get resource!")
+    }
     pub fn try_get(&self, handle: &ResourceHandle) -> Option<&R> {
         if let ResourceHandle::Valid(uuid) = handle {
             return self.hash_map.get(uuid);
         } else {
             return None;
         };
+    }
+    pub fn try_get_mut(&mut self, handle: &ResourceHandle) -> Option<&mut R> {
+        if let ResourceHandle::Valid(uuid) = handle {
+            return self.hash_map.get_mut(uuid);
+        } else {
+            return None;
+        }
     }
     pub fn free_all(&mut self) {
         self.hash_map
@@ -53,7 +63,6 @@ impl<R: ResourceId> RidServer<R> {
             );
         };
 
-        // Free rid from Godot's server.
         resource.free_rid();
 
         Ok(())
