@@ -1,3 +1,4 @@
+use bevy_ecs::schedule::{apply_deferred, IntoSystemConfigs};
 use components::MainViewport;
 use godot::prelude::*;
 use godot_ecs::{
@@ -32,13 +33,20 @@ impl NodeVirtual for EcsWorld {
     fn init(base: Base<Node>) -> Self {
         let mut ecs = Ecs::default();
 
-        ecs.add_systems(EnterTree, systems::create_main_cam)
-            .add_systems(Ready, systems::setup_main_cam)
-            .add_systems(Process, systems::move_camera)
-            .add_systems(ExitTree, systems::on_exit)
-            .insert_resource(RidServer::<Viewport>::new())
-            .insert_resource(RidServer::<Camera>::new())
-            .insert_resource(DeltaTime(0.0));
+        ecs.add_systems(
+            EnterTree,
+            (
+                systems::create_main_cam,
+                apply_deferred,
+                systems::setup_main_cam,
+            )
+                .chain(),
+        )
+        .add_systems(Process, systems::move_camera)
+        .add_systems(ExitTree, systems::on_exit)
+        .insert_resource(RidServer::<Viewport>::new())
+        .insert_resource(RidServer::<Camera>::new())
+        .insert_resource(DeltaTime(0.0));
 
         Self { base, ecs }
     }
@@ -53,7 +61,7 @@ impl NodeVirtual for EcsWorld {
 
             world.spawn((main_viewport, MainViewport));
         }
-        
+
         self.ecs.run_schedule(EnterTree)
     }
     fn ready(&mut self) {

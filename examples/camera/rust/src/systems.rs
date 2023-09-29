@@ -14,7 +14,7 @@ use crate::{components::*, resources::DeltaTime};
 /// As the name implies, we are going to create our camera resource here, through the
 /// [`RidServer`], it will also create the [`Rid`] in the [`RenderingServer`] then return
 /// a useful [`ResourceHandle`] that we can then store as a component on our entity.
-/// 
+///
 /// I'd recommend that you put systems like this in the [`EnterTree`] stage.
 pub fn create_main_cam(mut camera_server: ResMut<RidServer<Camera>>, mut commands: Commands) {
     let camera_pos = Position(Vector3::new(1.0, 2.0, -1.0));

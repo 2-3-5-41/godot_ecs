@@ -23,13 +23,7 @@ impl Camera {
         RenderingServer::singleton().camera_set_environment(self.get_rid(), env.get_rid());
         &self
     }
-    pub fn set_frustum(
-        &self,
-        size: f32,
-        offset: Vector2,
-        z_near: f32,
-        z_far: f32,
-    ) -> &Self {
+    pub fn set_frustum(&self, size: f32, offset: Vector2, z_near: f32, z_far: f32) -> &Self {
         RenderingServer::singleton().camera_set_frustum(
             self.get_rid(),
             size,
