@@ -6,9 +6,14 @@ use godot::{
     prelude::Rid,
 };
 
-use crate::resources::{traits::ResourceId, utils::macros::resource_object};
+use crate::resources::{
+    traits::{CommonLight3D, ResourceId},
+    utils::macros::resource_object,
+};
 
 resource_object!(DirectionalLight, directional_light_create, RenderingServer);
+
+impl CommonLight3D for DirectionalLight {}
 
 impl DirectionalLight {
     pub fn set_blend_splits(&self, enable: bool) -> &Self {

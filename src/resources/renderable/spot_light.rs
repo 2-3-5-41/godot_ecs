@@ -1,8 +1,10 @@
 use godot::{engine::RenderingServer, prelude::Rid};
 
-use crate::resources::{traits::ResourceId, utils::macros::resource_object};
+use crate::resources::{
+    traits::{CommonLight3D, ResourceId},
+    utils::macros::resource_object,
+};
 
 resource_object!(SpotLight, spot_light_create, RenderingServer);
 
-// TODO: Provide a builder API for `SpotLight`
-impl SpotLight {}
+impl CommonLight3D for SpotLight {}

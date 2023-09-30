@@ -3,7 +3,7 @@ use godot::{
         rendering_server::{ArrayFormat, BlendShapeMode, PrimitiveType},
         RenderingServer,
     },
-    prelude::{Aabb, Array, Dictionary, Rid, Variant, VariantArray, PackedByteArray},
+    prelude::{Aabb, Array, Dictionary, PackedByteArray, Rid, Variant, VariantArray},
 };
 
 use crate::resources::{traits::ResourceId, utils::macros::resource_object};
@@ -121,19 +121,53 @@ impl Mesh {
         )
     }
     pub fn surface_set_material(&self, surface: i32, material: Material) -> &Self {
-        RenderingServer::singleton().mesh_surface_set_material(self.get_rid(), surface, material.get_rid());
+        RenderingServer::singleton().mesh_surface_set_material(
+            self.get_rid(),
+            surface,
+            material.get_rid(),
+        );
         self
     }
-    pub fn surface_update_attribute_region(&self, surface: i32, offset: i32, data: PackedByteArray) -> &Self {
-        RenderingServer::singleton().mesh_surface_update_attribute_region(self.get_rid(), surface, offset, data);
+    pub fn surface_update_attribute_region(
+        &self,
+        surface: i32,
+        offset: i32,
+        data: PackedByteArray,
+    ) -> &Self {
+        RenderingServer::singleton().mesh_surface_update_attribute_region(
+            self.get_rid(),
+            surface,
+            offset,
+            data,
+        );
         self
     }
-    pub fn surface_update_skin_region(&self, surface: i32, offset: i32, data: PackedByteArray) -> &Self {
-        RenderingServer::singleton().mesh_surface_update_skin_region(self.get_rid(), surface, offset, data);
+    pub fn surface_update_skin_region(
+        &self,
+        surface: i32,
+        offset: i32,
+        data: PackedByteArray,
+    ) -> &Self {
+        RenderingServer::singleton().mesh_surface_update_skin_region(
+            self.get_rid(),
+            surface,
+            offset,
+            data,
+        );
         self
     }
-    pub fn surface_update_vertex_region(&self, surface: i32, offset: i32, data: PackedByteArray) -> &Self {
-        RenderingServer::singleton().mesh_surface_update_vertex_region(self.get_rid(), surface, offset, data);
+    pub fn surface_update_vertex_region(
+        &self,
+        surface: i32,
+        offset: i32,
+        data: PackedByteArray,
+    ) -> &Self {
+        RenderingServer::singleton().mesh_surface_update_vertex_region(
+            self.get_rid(),
+            surface,
+            offset,
+            data,
+        );
         self
     }
 }
