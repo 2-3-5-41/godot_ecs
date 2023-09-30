@@ -32,7 +32,7 @@ pub fn create_main_cam(mut camera_server: ResMut<RidServer<Camera>>, mut command
 /// all of this being done with easy builder patterns that interact with the [`RenderingServer`] in the background.
 pub fn setup_main_cam(
     camera_server: Res<RidServer<Camera>>,
-    camera_query: Query<&ResourceHandle, (With<Position>, With<Velocity>, With<MainCamera>)>,
+    camera_query: Query<&ResourceHandle, With<MainCamera>>,
     viewport_server: Res<RidServer<Viewport>>,
     viewport_query: Query<&ResourceHandle, With<MainViewport>>,
 ) {
