@@ -2,11 +2,10 @@ use bevy_ecs::{
     query::With,
     system::{Commands, Query, Res, ResMut},
 };
-use godot::{engine::RenderingServer, prelude::*};
+use godot::prelude::*;
 use godot_ecs::resources::{
     renderable::{camera::Camera, viewport::Viewport},
     rid_server::{ResourceHandle, RidServer},
-    traits::ResourceId,
 };
 
 use crate::{components::*, resources::DeltaTime};
@@ -49,8 +48,7 @@ pub fn setup_main_cam(
         .get(camera_handle)
         .set_perspective(90.0, 0.1, 4000.0);
 
-    let viewport = viewport_server.get(viewport_handle);
-    RenderingServer::singleton().viewport_attach_camera(viewport.get_rid(), camera.get_rid())
+    viewport_server.get(viewport_handle).attach_camera(camera);
 }
 
 /// As the name implies, we are grabbing our main camera entity, and accessing it's [`ResourceHandle`] from the [`RidServer`],
