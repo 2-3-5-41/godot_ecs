@@ -31,6 +31,6 @@ pub mod texture_2d_layered_placeholder;
 pub mod texture_2d_placeholder;
 pub mod texture_3d;
 pub mod texture_3d_placeholder;
-pub mod viewport; 
-pub mod visibility_notifier; // TODO
-pub mod voxel_gi; // TODO
+pub mod viewport;
+pub mod visibility_notifier;
+pub mod voxel_gi;

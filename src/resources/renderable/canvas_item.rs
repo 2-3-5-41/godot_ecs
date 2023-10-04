@@ -23,26 +23,17 @@ impl CanvasItem {
         animation_length: f64,
         slice_begin: f64,
         slice_end: f64,
-        offset: Option<f64>,
+        offset: f64,
     ) -> &Self {
-        if let Some(offset) = offset {
-            RenderingServer::singleton()
-                .canvas_item_add_animation_slice_ex(
-                    self.get_rid(),
-                    animation_length,
-                    slice_begin,
-                    slice_end,
-                )
-                .offset(offset)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_animation_slice(
+        RenderingServer::singleton()
+            .canvas_item_add_animation_slice_ex(
                 self.get_rid(),
                 animation_length,
                 slice_begin,
                 slice_end,
-            );
-        }
+            )
+            .offset(offset)
+            .done();
         self
     }
     pub fn add_circle(&self, pos: Vector2, radius: f32, color: Color) -> &Self {
@@ -74,37 +65,29 @@ impl CanvasItem {
         from: Vector2,
         to: Vector2,
         color: Color,
-        width: Option<f32>,
-        antialiased: Option<bool>,
+        width: f32,
+        antialiased: bool,
     ) -> &Self {
-        if let (Some(width), Some(antialiased)) = (width, antialiased) {
-            RenderingServer::singleton()
-                .canvas_item_add_line_ex(self.get_rid(), from, to, color)
-                .width(width)
-                .antialiased(antialiased)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_line(self.get_rid(), from, to, color);
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_line_ex(self.get_rid(), from, to, color)
+            .width(width)
+            .antialiased(antialiased)
+            .done();
         self
     }
     pub fn add_mesh(
         &self,
         mesh: Mesh,
-        transform: Option<Transform2D>,
-        modulate: Option<Color>,
-        texture: Option<Rid>,
+        transform: Transform2D,
+        modulate: Color,
+        texture: Rid,
     ) -> &Self {
-        if let (Some(transform), Some(modulate), Some(texture)) = (transform, modulate, texture) {
-            RenderingServer::singleton()
-                .canvas_item_add_mesh_ex(self.get_rid(), mesh.get_rid())
-                .transform(transform)
-                .modulate(modulate)
-                .texture(texture)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_mesh(self.get_rid(), mesh.get_rid());
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_mesh_ex(self.get_rid(), mesh.get_rid())
+            .transform(transform)
+            .modulate(modulate)
+            .texture(texture)
+            .done();
         self
     }
     pub fn add_msdf_texture_rect_region(
@@ -112,61 +95,37 @@ impl CanvasItem {
         rect: Rect2,
         texture: Rid,
         src_rect: Rect2,
-        modulate: Option<Color>,
-        outline_size: Option<i32>,
-        px_range: Option<f32>,
-        scale: Option<f32>,
+        modulate: Color,
+        outline_size: i32,
+        px_range: f32,
+        scale: f32,
     ) -> &Self {
-        if let (Some(modulate), Some(outline_size), Some(px_range), Some(scale)) =
-            (modulate, outline_size, px_range, scale)
-        {
-            RenderingServer::singleton()
-                .canvas_item_add_msdf_texture_rect_region_ex(
-                    self.get_rid(),
-                    rect,
-                    texture,
-                    src_rect,
-                )
-                .modulate(modulate)
-                .outline_size(outline_size)
-                .px_range(px_range)
-                .scale(scale)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_msdf_texture_rect_region(
-                self.get_rid(),
-                rect,
-                texture,
-                src_rect,
-            );
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_msdf_texture_rect_region_ex(self.get_rid(), rect, texture, src_rect)
+            .modulate(modulate)
+            .outline_size(outline_size)
+            .px_range(px_range)
+            .scale(scale)
+            .done();
         self
     }
     pub fn add_multiline(
         &self,
         points: PackedVector2Array,
         colors: PackedColorArray,
-        width: Option<f32>,
+        width: f32,
     ) -> &Self {
-        if let Some(width) = width {
-            RenderingServer::singleton()
-                .canvas_item_add_multiline_ex(self.get_rid(), points, colors)
-                .width(width)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_multiline(self.get_rid(), points, colors);
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_multiline_ex(self.get_rid(), points, colors)
+            .width(width)
+            .done();
         self
     }
-    pub fn add_multimesh(&self, mesh: Mesh, texture: Option<Rid>) -> &Self {
-        if let Some(texture) = texture {
-            RenderingServer::singleton()
-                .canvas_item_add_multimesh_ex(self.get_rid(), mesh.get_rid())
-                .texture(texture)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_multimesh(self.get_rid(), mesh.get_rid());
-        }
+    pub fn add_multimesh(&self, mesh: Mesh, texture: Rid) -> &Self {
+        RenderingServer::singleton()
+            .canvas_item_add_multimesh_ex(self.get_rid(), mesh.get_rid())
+            .texture(texture)
+            .done();
         self
     }
     pub fn add_nine_patch(
@@ -176,38 +135,25 @@ impl CanvasItem {
         texture: Rid,
         topleft: Vector2,
         bottomright: Vector2,
-        x_axis_mode: Option<NinePatchAxisMode>,
-        y_axis_mode: Option<NinePatchAxisMode>,
-        draw_center: Option<bool>,
-        modulate: Option<Color>,
+        x_axis_mode: NinePatchAxisMode,
+        y_axis_mode: NinePatchAxisMode,
+        draw_center: bool,
+        modulate: Color,
     ) -> &Self {
-        if let (Some(x_axis_mode), Some(y_axis_mode), Some(draw_center), Some(modulate)) =
-            (x_axis_mode, y_axis_mode, draw_center, modulate)
-        {
-            RenderingServer::singleton()
-                .canvas_item_add_nine_patch_ex(
-                    self.get_rid(),
-                    rect,
-                    source,
-                    texture,
-                    topleft,
-                    bottomright,
-                )
-                .x_axis_mode(x_axis_mode)
-                .y_axis_mode(y_axis_mode)
-                .draw_center(draw_center)
-                .modulate(modulate)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_nine_patch(
+        RenderingServer::singleton()
+            .canvas_item_add_nine_patch_ex(
                 self.get_rid(),
                 rect,
                 source,
                 texture,
                 topleft,
                 bottomright,
-            );
-        }
+            )
+            .x_axis_mode(x_axis_mode)
+            .y_axis_mode(y_axis_mode)
+            .draw_center(draw_center)
+            .modulate(modulate)
+            .done();
         self
     }
     pub fn add_particles(&self, particles: Particles, texture: Rid) -> &Self {
@@ -222,18 +168,14 @@ impl CanvasItem {
         &self,
         points: PackedVector2Array,
         colors: PackedColorArray,
-        uvs: Option<PackedVector2Array>,
-        texture: Option<Rid>,
+        uvs: PackedVector2Array,
+        texture: Rid,
     ) -> &Self {
-        if let (Some(uvs), Some(texture)) = (uvs, texture) {
-            RenderingServer::singleton()
-                .canvas_item_add_polygon_ex(self.get_rid(), points, colors)
-                .uvs(uvs)
-                .texture(texture)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_polygon(self.get_rid(), points, colors);
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_polygon_ex(self.get_rid(), points, colors)
+            .uvs(uvs)
+            .texture(texture)
+            .done();
         self
     }
     pub fn add_primitive(
@@ -264,24 +206,16 @@ impl CanvasItem {
         &self,
         rect: Rect2,
         texture: Rid,
-        tile: Option<bool>,
-        modulate: Option<Color>,
-        transpose: Option<bool>,
+        tile: bool,
+        modulate: Color,
+        transpose: bool,
     ) -> &Self {
-        if let (Some(tile), Some(modulate), Some(transpose)) = (tile, modulate, transpose) {
-            RenderingServer::singleton()
-                .canvas_item_add_texture_rect_ex(self.get_rid(), rect, texture)
-                .tile(tile)
-                .modulate(modulate)
-                .transpose(transpose)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_texture_rect(
-                self.get_rid(),
-                rect,
-                texture,
-            );
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_texture_rect_ex(self.get_rid(), rect, texture)
+            .tile(tile)
+            .modulate(modulate)
+            .transpose(transpose)
+            .done();
         self
     }
     pub fn add_texture_rect_region(
@@ -289,25 +223,16 @@ impl CanvasItem {
         rect: Rect2,
         texture: Rid,
         src_rect: Rect2,
-        modulate: Option<Color>,
-        transpose: Option<bool>,
-        clip_uv: Option<bool>,
+        modulate: Color,
+        transpose: bool,
+        clip_uv: bool,
     ) -> &Self {
-        if let (Some(modulate), Some(transpose), Some(clip_uv)) = (modulate, transpose, clip_uv) {
-            RenderingServer::singleton()
-                .canvas_item_add_texture_rect_region_ex(self.get_rid(), rect, texture, src_rect)
-                .modulate(modulate)
-                .transpose(transpose)
-                .clip_uv(clip_uv)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_texture_rect_region(
-                self.get_rid(),
-                rect,
-                texture,
-                src_rect,
-            );
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_texture_rect_region_ex(self.get_rid(), rect, texture, src_rect)
+            .modulate(modulate)
+            .transpose(transpose)
+            .clip_uv(clip_uv)
+            .done();
         self
     }
     pub fn add_triangle_array(
@@ -315,31 +240,20 @@ impl CanvasItem {
         indices: PackedInt32Array,
         points: PackedVector2Array,
         colors: PackedColorArray,
-        uvs: Option<PackedVector2Array>,
-        bones: Option<PackedInt32Array>,
-        weights: Option<PackedFloat32Array>,
-        texture: Option<Rid>,
-        count: Option<i32>,
+        uvs: PackedVector2Array,
+        bones: PackedInt32Array,
+        weights: PackedFloat32Array,
+        texture: Rid,
+        count: i32,
     ) -> &Self {
-        if let (Some(uvs), Some(bones), Some(weights), Some(texture), Some(count)) =
-            (uvs, bones, weights, texture, count)
-        {
-            RenderingServer::singleton()
-                .canvas_item_add_triangle_array_ex(self.get_rid(), indices, points, colors)
-                .uvs(uvs)
-                .bones(bones)
-                .weights(weights)
-                .texture(texture)
-                .count(count)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_add_triangle_array(
-                self.get_rid(),
-                indices,
-                points,
-                colors,
-            );
-        }
+        RenderingServer::singleton()
+            .canvas_item_add_triangle_array_ex(self.get_rid(), indices, points, colors)
+            .uvs(uvs)
+            .bones(bones)
+            .weights(weights)
+            .texture(texture)
+            .count(count)
+            .done();
         self
     }
     pub fn clear(&self) -> &Self {
@@ -349,24 +263,18 @@ impl CanvasItem {
     pub fn set_canvas_group_mode(
         &self,
         mode: CanvasGroupMode,
-        clear_margin: Option<f32>,
-        fit_empty: Option<bool>,
-        fit_margin: Option<f32>,
-        blur_mipmaps: Option<bool>,
+        clear_margin: f32,
+        fit_empty: bool,
+        fit_margin: f32,
+        blur_mipmaps: bool,
     ) -> &Self {
-        if let (Some(clear_margin), Some(fit_empty), Some(fit_margin), Some(blur_mipmaps)) =
-            (clear_margin, fit_empty, fit_margin, blur_mipmaps)
-        {
-            RenderingServer::singleton()
-                .canvas_item_set_canvas_group_mode_ex(self.get_rid(), mode)
-                .clear_margin(clear_margin)
-                .fit_empty(fit_empty)
-                .fit_margin(fit_margin)
-                .blur_mipmaps(blur_mipmaps)
-                .done();
-        } else {
-            RenderingServer::singleton().canvas_item_set_canvas_group_mode(self.get_rid(), mode);
-        }
+        RenderingServer::singleton()
+            .canvas_item_set_canvas_group_mode_ex(self.get_rid(), mode)
+            .clear_margin(clear_margin)
+            .fit_empty(fit_empty)
+            .fit_margin(fit_margin)
+            .blur_mipmaps(blur_mipmaps)
+            .done();
         self
     }
     pub fn set_clip(&self, clip: bool) -> &Self {
@@ -381,16 +289,11 @@ impl CanvasItem {
         );
         self
     }
-    pub fn set_custom_rect(&self, use_custom_rect: bool, rect: Option<Rect2>) -> &Self {
-        if let Some(rect) = rect {
-            RenderingServer::singleton()
-                .canvas_item_set_custom_rect_ex(self.get_rid(), use_custom_rect)
-                .rect(rect)
-                .done();
-        } else {
-            RenderingServer::singleton()
-                .canvas_item_set_custom_rect(self.get_rid(), use_custom_rect);
-        }
+    pub fn set_custom_rect(&self, use_custom_rect: bool, rect: Rect2) -> &Self {
+        RenderingServer::singleton()
+            .canvas_item_set_custom_rect_ex(self.get_rid(), use_custom_rect)
+            .rect(rect)
+            .done();
         self
     }
     pub fn set_default_texture_filter(&self, filter: CanvasItemTextureFilter) -> &Self {

@@ -14,22 +14,14 @@ impl Multimesh {
         &self,
         instances: i32,
         transform_format: MultimeshTransformFormat,
-        color_format: Option<bool>,
-        custom_data_format: Option<bool>,
+        color_format: bool,
+        custom_data_format: bool,
     ) -> &Self {
-        if let (Some(color_format), Some(custom_data_format)) = (color_format, custom_data_format) {
-            RenderingServer::singleton()
-                .multimesh_allocate_data_ex(self.get_rid(), instances, transform_format)
-                .color_format(color_format)
-                .custom_data_format(custom_data_format)
-                .done();
-        } else {
-            RenderingServer::singleton().multimesh_allocate_data(
-                self.get_rid(),
-                instances,
-                transform_format,
-            );
-        }
+        RenderingServer::singleton()
+            .multimesh_allocate_data_ex(self.get_rid(), instances, transform_format)
+            .color_format(color_format)
+            .custom_data_format(custom_data_format)
+            .done();
         self
     }
     pub fn get_aabb(&self) -> Aabb {

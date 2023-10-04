@@ -50,24 +50,18 @@ impl Environment {
     pub fn set_ambient_light(
         &self,
         color: Color,
-        ambient: Option<EnvironmentAmbientSource>,
-        energy: Option<f32>,
-        sky_contribution: Option<f32>,
-        reflection_source: Option<EnvironmentReflectionSource>,
+        ambient: EnvironmentAmbientSource,
+        energy: f32,
+        sky_contribution: f32,
+        reflection_source: EnvironmentReflectionSource,
     ) -> &Self {
-        if let (Some(ambient), Some(energy), Some(sky_contribution), Some(reflection_source)) =
-            (ambient, energy, sky_contribution, reflection_source)
-        {
-            RenderingServer::singleton()
-                .environment_set_ambient_light_ex(self.get_rid(), color)
-                .ambient(ambient)
-                .energy(energy)
-                .sky_contibution(sky_contribution)
-                .reflection_source(reflection_source)
-                .done();
-        } else {
-            RenderingServer::singleton().environment_set_ambient_light(self.get_rid(), color);
-        }
+        RenderingServer::singleton()
+            .environment_set_ambient_light_ex(self.get_rid(), color)
+            .ambient(ambient)
+            .energy(energy)
+            .sky_contibution(sky_contribution)
+            .reflection_source(reflection_source)
+            .done();
         self
     }
     pub fn set_background(&self, bg: EnvironmentBG) -> &Self {

@@ -33,20 +33,12 @@ impl Shader {
         &self,
         name: StringName,
         texture: Rid,
-        index: Option<i32>,
+        index: i32,
     ) -> &Self {
-        if let Some(index) = index {
-            RenderingServer::singleton()
-                .shader_set_default_texture_parameter_ex(self.get_rid(), name, texture)
-                .index(index)
-                .done();
-        } else {
-            RenderingServer::singleton().shader_set_default_texture_parameter(
-                self.get_rid(),
-                name,
-                texture,
-            );
-        }
+        RenderingServer::singleton()
+            .shader_set_default_texture_parameter_ex(self.get_rid(), name, texture)
+            .index(index)
+            .done();
         self
     }
     pub fn set_path_hint(&self, path: GodotString) -> &Self {

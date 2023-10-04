@@ -8,15 +8,11 @@ use crate::resources::{traits::ResourceId, utils::macros::resource_object};
 resource_object!(Skeleton, skeleton_create, RenderingServer);
 
 impl Skeleton {
-    pub fn allocate_data(&self, bones: i32, is_2d_skeleton: Option<bool>) -> &Self {
-        if let Some(is_2d_skeleton) = is_2d_skeleton {
-            RenderingServer::singleton()
-                .skeleton_allocate_data_ex(self.get_rid(), bones)
-                .is_2d_skeleton(is_2d_skeleton)
-                .done();
-        } else {
-            RenderingServer::singleton().skeleton_allocate_data(self.get_rid(), bones);
-        }
+    pub fn allocate_data(&self, bones: i32, is_2d_skeleton: bool) -> &Self {
+        RenderingServer::singleton()
+            .skeleton_allocate_data_ex(self.get_rid(), bones)
+            .is_2d_skeleton(is_2d_skeleton)
+            .done();
         self
     }
     pub fn bone_get_transform(&self, bone: i32) -> Transform3D {
