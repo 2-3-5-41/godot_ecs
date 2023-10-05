@@ -53,7 +53,7 @@ impl<R: ResourceId> RidServer<R> {
             .drain()
             .for_each(|(_, resource)| RenderingServer::singleton().free_rid(resource.get_rid()))
     }
-    pub fn free_resource(&mut self, handle: &ResourceHandle) -> Result<(), String> {
+    pub fn remove(&mut self, handle: &ResourceHandle) -> Result<(), String> {
         let ResourceHandle::Valid(uuid) = handle else {
             return Err("Cannot free invalid resource handle!".into());
         };
@@ -73,4 +73,19 @@ impl<R: ResourceId> RidServer<R> {
 pub enum ResourceHandle {
     Valid(Uuid),
     Invalid,
+}
+
+impl ResourceHandle {
+    pub fn get_valid(&self) -> &Uuid {
+        self.try_get_valid().unwrap()
+    }
+    pub fn try_get_valid(&self) -> Option<&Uuid> {
+        match self {
+            Self::Valid(uuid) => Some(&uuid),
+            Self::Invalid => None,
+        }
+    }
+    pub fn is_valid(&self) -> bool {
+        if let Self::Valid(_) = self { true } else { false }
+    }
 }

@@ -17,7 +17,7 @@ impl Instance {
         RenderingServer::singleton().instance_attach_object_instance_id(self.get_rid(), id);
         self
     }
-    pub fn attach_skeleton(&self, skeleton: Skeleton) -> &Self {
+    pub fn attach_skeleton(&self, skeleton: &Skeleton) -> &Self {
         RenderingServer::singleton().instance_attach_skeleton(self.get_rid(), skeleton.get_rid());
         self
     }
@@ -62,12 +62,12 @@ impl Instance {
         RenderingServer::singleton().instance_geometry_set_lod_bias(self.get_rid(), lod_bias);
         self
     }
-    pub fn geometry_set_material_overlay(&self, material: Material) -> &Self {
+    pub fn geometry_set_material_overlay(&self, material: &Material) -> &Self {
         RenderingServer::singleton()
             .instance_geometry_set_material_overlay(self.get_rid(), material.get_rid());
         self
     }
-    pub fn geometry_set_material_override(&self, material: Material) -> &Self {
+    pub fn geometry_set_material_override(&self, material: &Material) -> &Self {
         RenderingServer::singleton()
             .instance_geometry_set_material_override(self.get_rid(), material.get_rid());
         self
@@ -135,7 +135,7 @@ impl Instance {
         );
         self
     }
-    pub fn set_scenario(&self, scenario: Scenario) -> &Self {
+    pub fn set_scenario(&self, scenario: &Scenario) -> &Self {
         RenderingServer::singleton().instance_set_scenario(self.get_rid(), scenario.get_rid());
         self
     }
@@ -151,7 +151,7 @@ impl Instance {
         RenderingServer::singleton().instance_set_transform(self.get_rid(), transform);
         self
     }
-    pub fn set_visibility_parent(&self, parent: Instance) -> &Self {
+    pub fn set_visibility_parent(&self, parent: &Instance) -> &Self {
         RenderingServer::singleton()
             .instance_set_visibility_parent(self.get_rid(), parent.get_rid());
         self
