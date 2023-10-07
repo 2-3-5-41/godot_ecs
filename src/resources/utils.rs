@@ -8,9 +8,6 @@ pub(crate) mod macros {
     ///
     /// // Creates an `Area` struct with default implementations that generates the [`Rid`] on the [`PhysicsServer2D`]
     /// resource_object!(Area, area_create, PhysicsServer2D);
-    ///
-    /// // Creates an `Area` struct with default implementations that generates the [`Rid`] on the [`PhysicsServer3D`]
-    /// resource_object!(Area, area_create, PhysicsServer3D);
     /// ```
     macro_rules! resource_object {
         (

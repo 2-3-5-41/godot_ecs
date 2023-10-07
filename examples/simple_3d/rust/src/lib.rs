@@ -37,10 +37,10 @@ impl NodeVirtual for EcsWorld {
 
         // Add our systems.
         ecs.add_systems(EnterTree, systems::init);
-            // .add_systems(Ready, systems)
-            // .add_systems(Process, systems)
-            // .add_systems(PhysicsProcess, systems)
-            // .add_systems(ExitTree, systems)
+        // .add_systems(Ready, systems)
+        // .add_systems(Process, systems)
+        // .add_systems(PhysicsProcess, systems)
+        // .add_systems(ExitTree, systems)
 
         // Add our resources.
         ecs.insert_resource(RidServer::<Viewport>::new())

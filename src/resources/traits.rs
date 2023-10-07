@@ -1,9 +1,9 @@
 use godot::{
     engine::{
         rendering_server::{LightBakeMode, LightParam},
-        RenderingServer,
+        RenderingServer, PhysicsServer3D, physics_server_3d::ShapeType,
     },
-    prelude::{Color, Rid},
+    prelude::{Color, Rid, Variant},
 };
 
 pub trait ResourceId: Clone + Copy {
@@ -59,3 +59,17 @@ pub trait CommonLight3D: ResourceId {
         self
     }
 }
+
+pub trait CommonShape3D: ResourceId {
+    fn get_data(&self) -> Variant {
+        PhysicsServer3D::singleton().shape_get_data(self.get_rid())
+    }
+    fn get_type(&self) -> ShapeType {
+        PhysicsServer3D::singleton().shape_get_type(self.get_rid())
+    }
+    fn set_data(&self, data: Variant) -> &Self {
+        PhysicsServer3D::singleton().shape_set_data(self.get_rid(), data);
+        self
+    }
+}
+pub trait CommonShape2D: ResourceId {}

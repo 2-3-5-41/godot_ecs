@@ -86,6 +86,10 @@ impl ResourceHandle {
         }
     }
     pub fn is_valid(&self) -> bool {
-        if let Self::Valid(_) = self { true } else { false }
+        if let Self::Valid(_) = self {
+            true
+        } else {
+            false
+        }
     }
 }
