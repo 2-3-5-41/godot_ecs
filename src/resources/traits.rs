@@ -1,7 +1,8 @@
 use godot::{
     engine::{
+        physics_server_3d::ShapeType,
         rendering_server::{LightBakeMode, LightParam},
-        RenderingServer, PhysicsServer3D, physics_server_3d::ShapeType,
+        PhysicsServer3D, RenderingServer,
     },
     prelude::{Color, Rid, Variant},
 };

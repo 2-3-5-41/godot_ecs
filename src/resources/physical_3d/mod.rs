@@ -7,8 +7,8 @@ pub mod convex_polygon_shape;
 pub mod custom_shape;
 pub mod cylinder_shape;
 pub mod heightmap_shape;
+pub mod joint;
 pub mod separation_ray_shape;
 pub mod space;
 pub mod sphere_shape;
 pub mod world_boundary_shape;
-// TODO: Need to figur out an architecture for Joints that makes sense with the PhysicsServer3D API.

@@ -1,4 +1,7 @@
-use godot::{engine::{PhysicsServer3D, PhysicsDirectSpaceState3D, physics_server_3d::SpaceParameter}, prelude::{Rid, Gd}};
+use godot::{
+    engine::{physics_server_3d::SpaceParameter, PhysicsDirectSpaceState3D, PhysicsServer3D},
+    prelude::{Gd, Rid},
+};
 
 use crate::resources::{traits::ResourceId, utils::macros::resource_object};
 
