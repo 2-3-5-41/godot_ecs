@@ -7,7 +7,7 @@ use godot::{
     prelude::{Basis, Transform3D, Vector3},
 };
 use godot_ecs::resources::{
-    renderable::{
+    rendering::{
         camera::Camera, directional_light::DirectionalLight, instance::Instance,
         scenario::Scenario, viewport::Viewport,
     },

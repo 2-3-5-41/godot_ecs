@@ -4,7 +4,7 @@ use bevy_ecs::{
 };
 use godot::prelude::{Color, Rect2, Vector2};
 use godot_ecs::resources::{
-    renderable::{canvas_item::CanvasItem, texture_2d::Texture2D},
+    rendering::{canvas_item::CanvasItem, texture_2d::Texture2D},
     rid_server::{ResourceHandle, RidServer},
     traits::ResourceId,
 };
@@ -28,19 +28,22 @@ pub fn check_textures(
         .get_rid();
 
     for image in &new_images {
+        let texture = textures.get(image);
+        let texture_size = texture.get_image().get_size();
         let canvas_item = CanvasItem::create();
 
+        // Create random position.
         let mut rng = rand::thread_rng();
         let position: (f32, f32) = rng.gen();
 
+        // Create `Rect2` for our canvas item.
         let rect = Rect2::new(
             Vector2::new(position.0 * 512.0, position.1 * 512.0),
-            Vector2::new(512.0, 512.0),
+            Vector2::new(texture_size.x as f32, texture_size.y as f32),
         );
-        let texture = textures.get(image).get_rid();
 
         canvas_item
-            .add_texture_rect(rect, texture, false, Color::WHITE, false)
+            .add_texture_rect(rect, texture.get_rid(), false, Color::WHITE, false)
             .set_parent(root_canvas_item);
 
         let handle = canvas_items.add(canvas_item);

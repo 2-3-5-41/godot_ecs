@@ -1,6 +1,7 @@
 {
     "rust-analyzer.linkedProjects": [
         "./examples/simple_3d/rust/Cargo.toml",
-        "./examples/import_images/rust/Cargo.toml"
+        "./examples/import_images/rust/Cargo.toml",
+        "./examples/simple_gui/rust/Cargo.toml"
     ]
 }

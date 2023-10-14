@@ -10,6 +10,6 @@ crate-type = ["cdylib", "lib"]
 
 [dependencies]
 godot = { git = "https://github.com/godot-rust/gdext", branch = "master" }
-godot_ecs = { path = "../../../", features = ["full"] }
+godot_ecs = { path = "../../../" }
 bevy_ecs ={ version = "0.11.2", features = ["default"] }
 rand = "0.8.5"

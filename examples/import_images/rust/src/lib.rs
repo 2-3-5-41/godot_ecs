@@ -7,7 +7,7 @@ use godot_ecs::{
     ecs::Ecs,
     godot_schedule::Process,
     resources::{
-        renderable::{canvas::Canvas, canvas_item::CanvasItem, texture_2d::Texture2D},
+        rendering::{canvas::Canvas, canvas_item::CanvasItem, texture_2d::Texture2D},
         rid_server::RidServer,
     },
 };
@@ -72,7 +72,7 @@ impl ImportTest {
 
             let texture = Texture2D::create(
                 self.store_image(new_image)
-                    .expect("Failed to store and retrieve new image!"),
+                    .expect("Failed to store new image!"),
             );
 
             self.add_texture_to_world(texture);

@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="ImportTest"
+config/name="ImportImages"
+config/tags=PackedStringArray("2d", "example", "godot_ecs")
 run/main_scene="res://import_test.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"

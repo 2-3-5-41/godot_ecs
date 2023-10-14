@@ -7,7 +7,7 @@ use godot::{
     prelude::{Color, Rid, Variant},
 };
 
-pub trait ResourceId: Clone + Copy {
+pub trait ResourceId: Clone {
     fn get_rid(&self) -> Rid {
         unimplemented!()
     }

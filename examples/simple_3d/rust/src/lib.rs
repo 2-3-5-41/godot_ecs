@@ -4,7 +4,7 @@ use godot_ecs::{
     ecs::Ecs,
     godot_schedule::*,
     resources::{
-        renderable::{
+        rendering::{
             camera::Camera, directional_light::DirectionalLight, instance::Instance,
             scenario::Scenario, viewport::Viewport,
         },
