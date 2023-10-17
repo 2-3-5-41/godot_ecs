@@ -10,6 +10,9 @@ pub struct MainCamera;
 #[derive(Component, Debug, Clone)]
 pub struct MainScenario;
 
+#[derive(Component, Debug, Clone)]
+pub struct Sun;
+
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Position(pub Vector3);
 

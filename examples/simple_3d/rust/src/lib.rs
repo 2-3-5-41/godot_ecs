@@ -36,11 +36,8 @@ impl NodeVirtual for EcsWorld {
         let mut ecs = Ecs::default();
 
         // Add our systems.
-        ecs.add_systems(EnterTree, systems::init);
-        // .add_systems(Ready, systems)
-        // .add_systems(Process, systems)
-        // .add_systems(PhysicsProcess, systems)
-        // .add_systems(ExitTree, systems)
+        ecs.add_systems(EnterTree, systems::init)
+            .add_systems(Process, (systems::move_sun, systems::move_camera));
 
         // Add our resources.
         ecs.insert_resource(RidServer::<Viewport>::new())

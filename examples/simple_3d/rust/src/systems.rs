@@ -15,7 +15,10 @@ use godot_ecs::resources::{
     traits::{CommonLight3D, ResourceId},
 };
 
-use crate::components::{MainCamera, MainScenario, MainViewport};
+use crate::{
+    components::{MainCamera, MainScenario, MainViewport, Position, Sun, Velocity},
+    resources::DeltaTime,
+};
 
 pub fn init(
     viewports: Res<RidServer<Viewport>>,
@@ -46,7 +49,7 @@ pub fn init(
         .get(viewport_query.get_single().unwrap())
         .attach_camera(&main_camera);
 
-    // Now we can create a sun, first, we need to create an `Instance` so we can reander the sun.
+    // Now we can create a sun, first, we need to create an `Instance` so we can render, and position the sun in 3D space.
     let sun_instance = Instance::create();
 
     // Then we create our sun, and initialize all our sun's parameters.
@@ -76,7 +79,67 @@ pub fn init(
         .set_visible(true);
 
     // Finally, to maintain access to this data, we should add them to entities in the ECS.
-    commands.spawn((cameras.add(main_camera), MainCamera));
+    commands.spawn((
+        cameras.add(main_camera),
+        Position(Vector3::new(1.0, 1.0, -5.0)),
+        Velocity(Vector3::new(0.2, 0.0, 0.0)),
+        MainCamera,
+    ));
     commands.spawn(directional_lights.add(sun_light));
-    commands.spawn(instances.add(sun_instance));
+    commands.spawn((
+        instances.add(sun_instance),
+        Position(Vector3::new(-10.0, 3.0, -5.0)),
+        Velocity(Vector3::new(0.0, 0.0, 1.0)),
+        Sun,
+    ));
+}
+
+pub fn move_sun(
+    delta: Res<DeltaTime>,
+    suns: Res<RidServer<Instance>>,
+    mut query: Query<(&ResourceHandle, &mut Position, &Velocity), With<Sun>>,
+) {
+    query.iter_mut().for_each(|(res, mut pos, vel)| {
+        if pos.0.z >= 10.0 {
+            return;
+        }
+
+        // We can ignore these first two operations since we know we're only moving the `z` float.
+        // pos.0.x += vel.0.x * delta.as_f32();
+        // pos.0.y += vel.0.y * delta.as_f32();
+        pos.0.z += vel.0.z * delta.as_f32();
+
+        let sun = suns.get(res);
+
+        sun.set_transform(
+            Transform3D::new(Basis::IDENTITY, Vector3::new(pos.0.x, pos.0.y, pos.0.z)).looking_at(
+                Vector3::ZERO,
+                Vector3::UP,
+                false,
+            ),
+        );
+    });
+}
+
+pub fn move_camera(
+    delta: Res<DeltaTime>,
+    cameras: Res<RidServer<Camera>>,
+    mut query: Query<(&ResourceHandle, &mut Position, &Velocity), With<MainCamera>>,
+) {
+    query.iter_mut().for_each(|(res, mut pos, vel)| {
+        pos.0.x += vel.0.x * delta.as_f32();
+        // We can ignore these two operations since we know we're only moving the `x` float.
+        // pos.0.y += vel.0.y * delta.as_f32();
+        // pos.0.z += vel.0.z * delta.as_f32();
+
+        let camera = cameras.get(res);
+
+        camera.set_transform(
+            Transform3D::new(Basis::IDENTITY, Vector3::new(pos.0.x, pos.0.y, pos.0.z)).looking_at(
+                Vector3::ZERO,
+                Vector3::UP,
+                false,
+            ),
+        );
+    })
 }
