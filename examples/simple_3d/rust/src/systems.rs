@@ -104,9 +104,6 @@ pub fn move_sun(
             return;
         }
 
-        // We can ignore these first two operations since we know we're only moving the `z` float.
-        // pos.0.x += vel.0.x * delta.as_f32();
-        // pos.0.y += vel.0.y * delta.as_f32();
         pos.0.z += vel.0.z * delta.as_f32();
 
         let sun = suns.get(res);
@@ -128,9 +125,6 @@ pub fn move_camera(
 ) {
     query.iter_mut().for_each(|(res, mut pos, vel)| {
         pos.0.x += vel.0.x * delta.as_f32();
-        // We can ignore these two operations since we know we're only moving the `x` float.
-        // pos.0.y += vel.0.y * delta.as_f32();
-        // pos.0.z += vel.0.z * delta.as_f32();
 
         let camera = cameras.get(res);
 

@@ -59,25 +59,12 @@ impl NodeVirtual for EcsWorld {
         self.store_scenario();
         self.ecs.run_schedule(EnterTree)
     }
-    fn ready(&mut self) {
-        self.ecs.run_schedule(Ready)
-    }
     fn process(&mut self, delta: f64) {
         // Set process delta time.
         self.ecs.get_world_mut().resource_mut::<DeltaTime>().0 = delta;
 
         // Then run process schedule.
         self.ecs.run_schedule(Process);
-    }
-    fn physics_process(&mut self, delta: f64) {
-        // Set process delta time.
-        self.ecs.get_world_mut().resource_mut::<DeltaTime>().0 = delta;
-
-        // Then run physics process schedule.
-        self.ecs.run_schedule(PhysicsProcess)
-    }
-    fn exit_tree(&mut self) {
-        self.ecs.run_schedule(ExitTree)
     }
 }
 

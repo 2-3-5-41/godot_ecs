@@ -11,15 +11,11 @@ impl Shader {
     pub fn get_code(&self) -> GodotString {
         RenderingServer::singleton().shader_get_code(self.get_rid())
     }
-    pub fn get_default_texture_parameter(&self, name: StringName, index: Option<i32>) -> Rid {
-        if let Some(index) = index {
-            RenderingServer::singleton()
-                .shader_get_default_texture_parameter_ex(self.get_rid(), name)
-                .index(index)
-                .done()
-        } else {
-            RenderingServer::singleton().shader_get_default_texture_parameter(self.get_rid(), name)
-        }
+    pub fn get_default_texture_parameter(&self, name: StringName, index: i32) -> Rid {
+        RenderingServer::singleton()
+            .shader_get_default_texture_parameter_ex(self.get_rid(), name)
+            .index(index)
+            .done()
     }
     pub fn get_parameter_default(&self, name: StringName) -> &Self {
         RenderingServer::singleton().shader_get_parameter_default(self.get_rid(), name);
