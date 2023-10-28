@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bqhvhwtavr6wt"]
+
+[node name="XrEcs" type="XrEcs"]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+use_xr = true
+use_debanding = true
+size = Vector2i(0, 0)
+
+[node name="XROrigin3D" type="XROrigin3D" parent="SubViewport"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="SubViewport/XROrigin3D"]

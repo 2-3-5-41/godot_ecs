@@ -1,3 +1,3 @@
 # [Example] XR
 
-This example will showcase how you can use Godot's `XRServer` inside `bevy_ecs`.
+This is a bare bones example to showcase how you can access pose and tracker data through `bevy_ecs` and Godot's `XRServer`.
