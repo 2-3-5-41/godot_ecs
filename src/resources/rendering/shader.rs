@@ -1,6 +1,6 @@
 use godot::{
     engine::RenderingServer,
-    prelude::{GodotString, Rid, StringName},
+    prelude::{GString, Rid, StringName},
 };
 
 use crate::resources::{traits::ResourceId, utils::macros::resource_object};
@@ -8,7 +8,7 @@ use crate::resources::{traits::ResourceId, utils::macros::resource_object};
 resource_object!(Shader, shader_create, RenderingServer);
 
 impl Shader {
-    pub fn get_code(&self) -> GodotString {
+    pub fn get_code(&self) -> GString {
         RenderingServer::singleton().shader_get_code(self.get_rid())
     }
     pub fn get_default_texture_parameter(&self, name: StringName, index: i32) -> Rid {
@@ -21,7 +21,7 @@ impl Shader {
         RenderingServer::singleton().shader_get_parameter_default(self.get_rid(), name);
         self
     }
-    pub fn set_code(&self, code: GodotString) -> &Self {
+    pub fn set_code(&self, code: GString) -> &Self {
         RenderingServer::singleton().shader_set_code(self.get_rid(), code);
         self
     }
@@ -37,7 +37,7 @@ impl Shader {
             .done();
         self
     }
-    pub fn set_path_hint(&self, path: GodotString) -> &Self {
+    pub fn set_path_hint(&self, path: GString) -> &Self {
         RenderingServer::singleton().shader_set_path_hint(self.get_rid(), path);
         self
     }
