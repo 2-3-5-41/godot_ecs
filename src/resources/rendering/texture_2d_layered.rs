@@ -63,7 +63,11 @@ impl Texture2DLayered {
     }
     pub fn try_get_layer(&self, layer: usize) -> Option<Gd<Image>> {
         let instance = self.layers[layer];
-        Gd::try_from_instance_id(instance)
+        match Gd::try_from_instance_id(instance) {
+            Ok(image) => Some(image),
+            // API changed upstream. For now ignore the error.
+            Err(_) => None,
+        }
     }
     pub fn update(&self, image: Gd<Image>, layer: i32) -> &Self {
         RenderingServer::singleton().texture_2d_update(self.get_rid(), image, layer);

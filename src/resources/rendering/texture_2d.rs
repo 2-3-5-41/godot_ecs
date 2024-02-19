@@ -26,7 +26,11 @@ impl Texture2D {
     }
     pub fn try_get_image(&self) -> Option<Gd<Image>> {
         let instance = self.image;
-        Gd::try_from_instance_id(instance)
+        match Gd::try_from_instance_id(instance) {
+            Ok(image) => Some(image),
+            // API changed upstream. For now ignore the error.
+            Err(_) => None,
+        }
     }
     pub fn create(image: Gd<Image>) -> Self {
         let id = image.instance_id();
