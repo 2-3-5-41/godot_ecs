@@ -1,5 +1,5 @@
 # godot_ecs
-What if Godot 4.1 and Bevy got married? Well, you'd get one interesting duo of data driven goodness.
+What if Godot and Bevy got married? Well, you'd get one interesting duo of data driven goodness.
 
 ## In Development
 > **This crate is not production ready** ⚠️
